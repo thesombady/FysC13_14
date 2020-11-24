@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from math import sin, cos, pi
 """
 def GeneralPotential(r,a,b,n,m):
     if n<m:
@@ -15,7 +16,7 @@ plt.ylim(-50,50)
 plt.grid()
 plt.show()
 """
-
+"""
 def SheerStress(x):
     return x**2
 
@@ -32,4 +33,12 @@ for i in range(len(list1)):
 plt.grid()
 plt.ylim(-1,5)
 plt.legend()
+plt.show()
+"""
+plt.axvline(1.57, color = "black", linestyle = "--")
+plt.axvline(3.14, color = "black", linestyle = "--")
+xlist = np.linspace(0, 5, 1000)
+ylist = [abs(sin(2 * i+ pi / 2)) for i in xlist]
+plt.plot(xlist, ylist, label="Test")
+plt.xlim(1.3, 3.5)
 plt.show()
