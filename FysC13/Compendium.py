@@ -35,10 +35,12 @@ plt.ylim(-1,5)
 plt.legend()
 plt.show()
 """
-plt.axvline(1.57, color = "black", linestyle = "--")
-plt.axvline(3.14, color = "black", linestyle = "--")
-xlist = np.linspace(0, 5, 1000)
-ylist = [abs(sin(2 * i+ pi / 2)) for i in xlist]
+plt.axvline(-pi/2, color = "black", linestyle = "--")
+plt.axvline(pi/2, color = "black", linestyle = "--")
+plt.axvline(-pi, color = "red", linestyle = "--")
+plt.axvline(pi, color = "red", linestyle = "--")
+xlist = np.linspace(-5, 5, 1000)
+ylist = [abs(sin(i)) for i in xlist]
 plt.plot(xlist, ylist, label="Test")
-plt.xlim(1.3, 3.5)
+plt.xlim(-4*pi/3, 4*pi/3)
 plt.show()
