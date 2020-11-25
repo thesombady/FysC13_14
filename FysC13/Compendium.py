@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from math import sin, cos, pi
+from math import sin, cos, pi, floor
 """
 def GeneralPotential(r,a,b,n,m):
     if n<m:
@@ -35,6 +35,7 @@ plt.ylim(-1,5)
 plt.legend()
 plt.show()
 """
+"""
 plt.axvline(-pi/2, color = "black", linestyle = "--")
 plt.axvline(pi/2, color = "black", linestyle = "--")
 plt.axvline(-pi, color = "red", linestyle = "--")
@@ -45,4 +46,15 @@ ylist2 = [(1/10*cos(i) + 2) for i in xlist]
 plt.plot(xlist, ylist, label="Test")
 plt.plot(xlist, ylist2, label = "Test2")
 plt.xlim(-4*pi/3, 4*pi/3)
+plt.show()
+"""
+plt.axvline(-pi/2, color = "black", linestyle = "--")
+plt.axvline(+pi/2, color = "black", linestyle = "--")
+xlist = np.linspace(-3/2*pi, 3/2*pi, 1000)
+ylist = [abs(sin(xlist[i])) for i in range(len(xlist))]
+plt.plot(xlist, ylist, label = "The standing wave", linestyle = "-")
+xlist2 = np.linspace(-3/2*pi, 3/2*pi, floor(16*pi/2))
+ylist2 = [abs(sin(xlist2[i])) for i in range(len(xlist2))]
+plt.plot(xlist2, ylist2, '.', label = r"Quantized $k$", color = "red")
+plt.legend()
 plt.show()
