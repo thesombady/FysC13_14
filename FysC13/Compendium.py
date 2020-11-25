@@ -41,6 +41,8 @@ plt.axvline(-pi, color = "red", linestyle = "--")
 plt.axvline(pi, color = "red", linestyle = "--")
 xlist = np.linspace(-5, 5, 1000)
 ylist = [abs(sin(i)) for i in xlist]
+ylist2 = [(1/10*cos(i) + 2) for i in xlist]
 plt.plot(xlist, ylist, label="Test")
+plt.plot(xlist, ylist2, label = "Test2")
 plt.xlim(-4*pi/3, 4*pi/3)
 plt.show()
