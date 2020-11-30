@@ -59,3 +59,4 @@ ylist2 = [abs(sin(xlist2[i])) for i in range(len(xlist2))]
 plt.plot(xlist2, ylist2, '.', label = r"Quantized $k$", color = "red")
 plt.legend()
 plt.show()
+print("Hello")
