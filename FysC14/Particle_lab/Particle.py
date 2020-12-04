@@ -11,6 +11,9 @@ Path = os.path.join(os.getcwd(), "FysC14/Particle_lab/Data.txt")
 
 with open(Path, "r") as file:
     Data = file.read()
-Dataset = io.StringIO(Data.decode('utf-8'))
-Dataframe = Dataset.readlines()
-print(Dataframe)
+#Dataset = io.StringIO(Data.decode('utf-8'))
+#Dataframe = Dataset.readlines()
+#print(Dataframe)
+import PhysicsNum as pn
+print(dir(pn))
+print(help(pn.ForceLinearreg))
