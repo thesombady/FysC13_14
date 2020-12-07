@@ -37,4 +37,4 @@ def Excersise1():
     plt.grid()
     plt.legend()
     plt.show()
-Excersise1()
+#Excersise1()
