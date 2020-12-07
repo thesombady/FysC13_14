@@ -2,7 +2,7 @@ import os, sys
 import numpy as np
 import matplotlib.pyplot as plt
 def Excersise1():
-    K = np.linspace(-10, 10, 1000)
+    K = np.linspace(0, 10, 1000)
     hbar = (1.05) * 10 ** (-34)
     g = np.pi/2
     m = 9.11 * 10 ** (-19)
@@ -37,3 +37,4 @@ def Excersise1():
     plt.grid()
     plt.legend()
     plt.show()
+Excersise1()
