@@ -38,7 +38,7 @@ def task1_1():
 	plt.title("Voltage versus Current")
 	plt.savefig("Task1.png")
 	plt.show()
-#task1_1()
+task1_1()
 
 def task1_2():
 	Voltage = np.array([3, 3.5, 4, 4.5, 5, 5.5, 6, 0.5, 1, 1.5, 2])
@@ -55,9 +55,10 @@ def task1_2():
 	plt.ylabel(r"Intensity $[\frac{W}{m^2}]$")
 	plt.title("Intensity versus Current")
 	plt.legend()
+	plt.grid()
 	plt.savefig("Task1_2.png")
 	plt.show()
-#task1_2()
+task1_2()
 
 def task1_3():
 	Voltage = np.array([3, 3.5, 4, 4.5, 5, 5.5, 6, 0.5, 1, 1.5, 2])
@@ -77,6 +78,7 @@ def task1_3():
 	plt.ylabel(r"Intensity $[\frac{W}{m^2}]$")
 	plt.legend()
 	plt.title("Intensity versus Voltage")
+	plt.grid()
 	plt.savefig("task1_3.png")
 	plt.show()
-#task1_3()
+task1_3()
