@@ -24,7 +24,7 @@ def Parser(Path):
 AGData = Parser(PATH1)
 Al2O3Data = Parser(PATH2)
 MixtureData = Parser(PATH3)
-plt.plot(AGData[0], AGData[1], '.', label = "Ag Data")
+plt.plot(AGData[0], AGData[1], '.', markersize = 1, label = "Ag Data")
 plt.legend()
 plt.grid()
 plt.show()
