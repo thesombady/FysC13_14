@@ -38,16 +38,9 @@ def Excersise1():
     plt.legend()
     plt.show()
 #Excersise1()
-hbar = 6.626 * 10 ** (-34)
-me = 9.311 * 10 ** (-31)
-U = 60 * 1.602 * 10 ** (-19)
-Energy = lambda sigma: - U + U * hbar * me /(2 * sigma**2)
-sigma = 1
-i = 0
-while True:
-    print(Energy(sigma)/(1.602 * 10 ** (-19)))
-    sigma -=0.00001
-    print(i)
-    i += 1
-    if i == 1000000:
-        break
+def Excersise2():
+    U = 20
+    Potential = lambda G: - 2*U * np.sqrt(2*np.pi)*0.5/3*np.exp(-G**2*(0.5*10**(-10))**2/2)
+    g = 4*np.pi/(3*10**(-10))
+    print(Potential(g))
+#ExcExcersise2()
