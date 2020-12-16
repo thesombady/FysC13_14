@@ -38,9 +38,14 @@ def Excersise1():
     plt.legend()
     plt.show()
 #Excersise1()
-def Excersise2():
+def Excersise2(g):
     U = 20
     Potential = lambda G: - 2*U * np.sqrt(2*np.pi)*0.5/3*np.exp(-G**2*(0.5*10**(-10))**2/2)
-    g = 4*np.pi/(3*10**(-10))
-    print(Potential(g))
-#ExcExcersise2()
+    return Potential(g)
+e2 = Excersise2(4*np.pi/(3*10**(-10)))
+e1 = Excersise2(2*np.pi/(3*10**(-10)))
+print(e1/e2)
+print(27/5)
+def Bohr(n, zeff):
+    return -13.6/n**2 * zeff**2
+print((Bohr(1,2) - Bohr(2,2))/(Bohr(2,2) - Bohr(3,2)))
