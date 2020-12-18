@@ -4,6 +4,7 @@ import numpy as np
 import os, sys
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+import math
 
 PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
 PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
@@ -28,6 +29,7 @@ def Parser(Path):
 
 class Gaussian(object):
     Name = "Name Of Tested Object"
+    Wavelength = 1.54
     def __init__(self, Data):
         """Data containing both x-values and y-values"""
         try:
@@ -37,6 +39,8 @@ class Gaussian(object):
             raise ImportError("[Gaussian]: Cant import the data")
         self.Computed = []
         self.Simluated = []
+        self.MuValues = []
+        self.SigmaValues = []
 
     def plot(self):
         plt.title(r"Intensity versus $2\cdot \Theta$ angle for {} data".format(self.Name))
@@ -66,6 +70,8 @@ class Gaussian(object):
             plt.grid()
             plt.legend()
             plt.show()
+        self.MuValues.append(Fit[1])
+        self.SigmaValues.append(Fit[2])
         self.Computed.append((xlist, ylist))
         return Gaussianfunc, Fit, covarience
 
@@ -117,9 +123,49 @@ class Gaussian(object):
         except Exception as e:
             raise e
 
+    def __str__(self):
+        return "Mu values :{}\nSigma values:{}".format([self.MuValues[i] for i in range(len(self.MuValues))], [self.SigmaValues[i] for i in range(len(self.SigmaValues))])
+
+    def __repr__(self):
+        return "Mu values :{}\nSigma values:{}".format([self.MuValues[i] for i in range(len(self.MuValues))], [self.SigmaValues[i] for i in range(len(self.SigmaValues))])
+
+    def Compute(self, a = 1, b = None , c = None, alpha = 1, Beta = 1, gamma = 0, Accurarcy = 0.01):
+        """Distances in units of Å, and returns the appropiate miller incidies"""
+        Distances = []
+
+        for i in range(len(self.MuValues)):
+            value = math.radians(self.MuValues[i]/2)
+            d = self.Wavelength/(2*math.sin(value))
+            print(f"d = {d} [Å] for the data {self.Name} for peak {i+1}.")
+            Distances.append(d)
+        if b == None or c == None:
+            b, c = a, a
+        for h in [0,1,2,3]:
+            for k in [0,1,2,3]:
+                for l in [0,1,2,3]:
+                    for i in range(len(Distances)):
+                        Difference = abs((1/Distances[i])**2-((h/a)**2 + (k/b)**2 + (l/c)**2))
+                        if Difference < Accurarcy:
+                            print(f"Peak {i+1} has the following millerplane({h},{k},{l})\nDifference is {Difference}")
+        def Scherrers():
+            T = lambda k, beta, theta: k*self.Wavelength/(beta * math.sin(math.radians(theta)))
+            FWHM = lambda sigma: 2*math.sqrt(2*math.log(2))*sigma
+            FWHM_Values = []
+            for val in (self.SigmaValues):
+                FWHM_Values.append(FWHM(val))
+            Mean = []
+            for i in range(len(FWHM_Values)):
+                for j in range(len(self.MuValues)):
+                    Val = T(0.94, FWHM_Values[i], self.MuValues[j])
+                    #print(f"Scherrer's is then {Val} Å for peak {j}")
+                    Mean.append(Val)
+            print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
+        Scherrers()
+
 
 
 def SilverComputation():
+    """Silver, Ag, has a Cubic structure with a lattice constant of a = 4.086 Å"""
     Silver = Gaussian(Parser(PATH1))
     Silver.Name = "Silver"
     Peak1 = Silver.ComputeGaussian(1150, 1275)
@@ -127,12 +173,15 @@ def SilverComputation():
     Peak3 = Silver.ComputeGaussian(2875, 3050)
     Peak4 = Silver.ComputeGaussian(3730, 3900)
     Peak5 = Silver.ComputeGaussian(4050, 4125)
-    Peak6 = Silver.ComputeGaussian(5100, 5250)
+    Peak6 = Silver.ComputeGaussian(5150, 5210)
     #Silver.Plotall()
     Silver.SimlulatedData()
-#SilverComputation()
+    print(Silver)
+    Silver.Compute(4.086)
+SilverComputation()
 
 def Al2O3Compuation():
+    """Al2O3 has a hexogonal structure with the following constants, a = b = 4.7589 Å and c = 12.991 Å, α = β= 90° and γ = 120 """
     Al2O3 = Gaussian(Parser(PATH2))
     Al2O3.Name = "Al2O3"
     Peak1 = Al2O3.ComputeGaussian(340, 405)
@@ -154,8 +203,11 @@ def Al2O3Compuation():
     Peak17 = Al2O3.ComputeGaussian(4699, 4760)# Somewhat small peak
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
     #Al2O3.Plotall()
-    Al2O3.SimlulatedData()
+    #Al2O3.SimlulatedData()
+    print(Al2O3)
+    Al2O3.Compute()
 #Al2O3Compuation()
+
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
     Mixture.Name = "Ag & Al2O3 mix"
@@ -179,4 +231,6 @@ def MixtureComputation():
     Peak18 = Mixture.ComputeGaussian(4700, 4775)
     Peak19 = Mixture.ComputeGaussian(4975, 5050)
     Mixture.SimlulatedData()
+    print(Mixture)
+    #Mixture.Compute()
 #MixtureComputation()
