@@ -203,7 +203,7 @@ def Al2O3Compuation():
     Peak17 = Al2O3.ComputeGaussian(4699, 4760)# Somewhat small peak
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
     #Al2O3.Plotall()
-    #Al2O3.SimlulatedData()
+    Al2O3.SimlulatedData()
     print(Al2O3)
     Al2O3.Compute()
 #Al2O3Compuation()
