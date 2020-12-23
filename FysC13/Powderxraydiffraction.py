@@ -176,8 +176,8 @@ def SilverComputation():
     Peak6 = Silver.ComputeGaussian(5150, 5210)
     #Silver.Plotall()
     Silver.SimlulatedData()
-    print(Silver)
-    Silver.Compute(4.086)
+    #print(Silver)
+    #Silver.Compute(4.086)
 SilverComputation()
 
 def Al2O3Compuation():
@@ -204,9 +204,9 @@ def Al2O3Compuation():
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
     #Al2O3.Plotall()
     Al2O3.SimlulatedData()
-    print(Al2O3)
-    Al2O3.Compute()
-#Al2O3Compuation()
+    #print(Al2O3)
+    #Al2O3.Compute()
+Al2O3Compuation()
 
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
@@ -233,4 +233,4 @@ def MixtureComputation():
     Mixture.SimlulatedData()
     print(Mixture)
     #Mixture.Compute()
-#MixtureComputation()
+MixtureComputation()
