@@ -139,7 +139,7 @@ class Gaussian(object):
             print(f"d = {d} [Å] for the data {self.Name} for peak {i+1}.")
             Distances.append(d)
         if b == None or c == None:
-            b, c = a, a
+            b = a; c = a
         for h in [0,1,2,3]:
             for k in [0,1,2,3]:
                 for l in [0,1,2,3]:
@@ -162,6 +162,15 @@ class Gaussian(object):
             print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
         Scherrers()
 
+def Task5():
+    def StructureFactor(h,k,l):
+        U = []
+        V = []
+        W = []
+        #Above is basis coefficents
+        f = [] #Atomic scattering factor
+        Values = [f[m]*np.exp( 2*np.pi*j(U[m]*h+V[m]*k+W[m]*l))]
+        return sum(Lists)
 
 
 def SilverComputation():
@@ -177,8 +186,8 @@ def SilverComputation():
     #Silver.Plotall()
     Silver.SimlulatedData()
     #print(Silver)
-    #Silver.Compute(4.086)
-SilverComputation()
+    Silver.Compute(4.086)
+#SilverComputation()
 
 def Al2O3Compuation():
     """Al2O3 has a hexogonal structure with the following constants, a = b = 4.7589 Å and c = 12.991 Å, α = β= 90° and γ = 120 """
@@ -206,7 +215,7 @@ def Al2O3Compuation():
     Al2O3.SimlulatedData()
     #print(Al2O3)
     #Al2O3.Compute()
-Al2O3Compuation()
+#Al2O3Compuation()
 
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
@@ -231,6 +240,6 @@ def MixtureComputation():
     Peak18 = Mixture.ComputeGaussian(4700, 4775)
     Peak19 = Mixture.ComputeGaussian(4975, 5050)
     Mixture.SimlulatedData()
-    print(Mixture)
+    #print(Mixture)
     #Mixture.Compute()
-MixtureComputation()
+#MixtureComputation()
