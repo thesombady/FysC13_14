@@ -1,5 +1,5 @@
-import pandas as pd
-import PhysicsNum as pn
+#import pandas as pd
+#import PhysicsNum as pn
 import numpy as np
 import os, sys
 import matplotlib.pyplot as plt
@@ -14,6 +14,7 @@ try:
     PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
     PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
 except:
+    print(PATHError("System; Cant locate the files"))
     raise PATHError("System; Cant locate the files")
 
 def Parser(Path):
