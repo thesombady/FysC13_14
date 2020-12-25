@@ -35,7 +35,7 @@ def Parser(Path):
         Ylist = []
         for i in range(len(Data)):
             Values = Data[i].split(' ')
-            val2 = Values[-1].replace("\n", '')
+            val2 = Values[-1].replace("\n", '')#Remove a newline and replace by nothing
             Xlist.append(float(Values[0]))
             Ylist.append(float(val2))
         return np.array(Xlist), np.array(Ylist)
@@ -162,7 +162,7 @@ class Gaussian(object):
                         if Difference < Accurarcy:
                             print(f"Peak {i+1} has the following millerplane({h},{k},{l})\nDifference is {Difference}")
         def Scherrers():
-            T = lambda k, beta, theta: k*self.Wavelength/(beta * math.sin(math.radians(theta)))
+            T = lambda k, beta, theta: k*self.Wavelength/(beta * math.cos(math.radians(theta)))
             FWHM = lambda sigma: 2*math.sqrt(2*math.log(2))*sigma
             FWHM_Values = []
             for val in (self.SigmaValues):
@@ -170,7 +170,7 @@ class Gaussian(object):
             Mean = []
             for i in range(len(FWHM_Values)):
                 for j in range(len(self.MuValues)):
-                    Val = T(0.94, FWHM_Values[i], self.MuValues[j])
+                    Val = T(0.94, FWHM_Values[i], self.MuValues[j]/2)
                     #print(f"Scherrer's is then {Val} Å for peak {j}")
                     Mean.append(Val)
             print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
@@ -197,7 +197,7 @@ def Task6():
     hkl = np.array([hkl])
     print(M, hkl)
 
-Task6()
+#Task6()
 
 def SilverComputation():
     """Silver, Ag, has a Cubic structure with a lattice constant of a = 4.086 Å"""
@@ -212,8 +212,8 @@ def SilverComputation():
     #Silver.Plotall()
     Silver.SimlulatedData()
     #print(Silver)
-    Silver.Compute(4.086)
-#SilverComputation()
+    #Silver.Compute(4.086, Accurarcy = 0.05)
+SilverComputation()
 
 def Al2O3Compuation():
     """Al2O3 has a hexogonal structure with the following constants, a = b = 4.7589 Å and c = 12.991 Å, α = β= 90° and γ = 120 """
@@ -241,7 +241,7 @@ def Al2O3Compuation():
     Al2O3.SimlulatedData()
     #print(Al2O3)
     #Al2O3.Compute()
-#Al2O3Compuation()
+Al2O3Compuation()
 
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
@@ -268,4 +268,4 @@ def MixtureComputation():
     Mixture.SimlulatedData()
     #print(Mixture)
     #Mixture.Compute()
-#MixtureComputation()
+MixtureComputation()
