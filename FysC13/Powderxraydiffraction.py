@@ -56,6 +56,7 @@ class Gaussian(object):
         self.Simluated = []
         self.MuValues = []
         self.SigmaValues = []
+        self.Amplitud = []
 
     def plot(self):
         plt.title(r"Intensity versus $2\cdot \Theta$ angle for {} data".format(self.Name))
@@ -88,6 +89,7 @@ class Gaussian(object):
         self.MuValues.append(Fit[1])
         self.SigmaValues.append(Fit[2])
         self.Computed.append((xlist, ylist))
+        self.Amplitud.append(Fit[0])
         return Gaussianfunc, Fit, covarience
 
     def TestValues(self, index1, index2):
@@ -212,7 +214,8 @@ def SilverComputation():
     #Silver.Plotall()
     Silver.SimlulatedData()
     #print(Silver)
-    #Silver.Compute(4.086, Accurarcy = 0.05)
+    Silver.Compute(4.086, Accurarcy = 0.05)
+    print(Silver.Amplitud)
 SilverComputation()
 
 def Al2O3Compuation():
@@ -241,6 +244,7 @@ def Al2O3Compuation():
     Al2O3.SimlulatedData()
     #print(Al2O3)
     #Al2O3.Compute()
+    print(Al2O3.Amplitud)
 Al2O3Compuation()
 
 def MixtureComputation():
@@ -268,4 +272,5 @@ def MixtureComputation():
     Mixture.SimlulatedData()
     #print(Mixture)
     #Mixture.Compute()
+    print(Mixture.Amplitud)
 MixtureComputation()
