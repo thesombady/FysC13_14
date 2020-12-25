@@ -6,9 +6,15 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import math
 
-PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
-PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
-PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
+class PATHError(Exception):
+    pass
+
+try:
+    PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
+    PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
+    PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
+except:
+    raise PATHError("System; Cant locate the files")
 
 def Parser(Path):
     """Parser function provides the parsered data provided from a .xyd file. This method requires that the data
