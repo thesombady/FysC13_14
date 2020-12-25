@@ -6,17 +6,25 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import math
 
-class PATHError(Exception):
-    pass
-
 try:
+    """
     PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
     PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
     PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
+    """
+    Folder = os.path.join(os.getcwd(), "XrayData")
+    PATH1 = os.path.join(Folder, "Ag.xyd")
+    PATH2 = os.path.join(Folder, "Al2O3.xyd")
+    PATH3 = os.path.join(Folder, "mixture.xyd")
 except:
-    print(PATHError("System; Cant locate the files"))
-    raise PATHError("System; Cant locate the files")
-
+    try:
+        Folder = os.path.join(os.getcwd(), "XrayData")
+        PATH1 = os.path.join(Folder, "Ag.xyd")
+        PATH2 = os.path.join(Folder, "Al2O3.xyd")
+        PATH3 = os.path.join(Folder, "mixture.xyd")
+    except:
+        raise PATHError("System; Cant locate the files")
+print(os.path.join(os.getcwd(), "XrayData/Ag.xyd"))
 def Parser(Path):
     """Parser function provides the parsered data provided from a .xyd file. This method requires that the data
     is strictly ordered"""
@@ -139,7 +147,6 @@ class Gaussian(object):
     def Compute(self, a = 1, b = None , c = None, alpha = 1, Beta = 1, gamma = 0, Accurarcy = 0.01):
         """Distances in units of Å, and returns the appropiate miller incidies"""
         Distances = []
-
         for i in range(len(self.MuValues)):
             value = math.radians(self.MuValues[i]/2)
             d = self.Wavelength/(2*math.sin(value))
@@ -169,16 +176,28 @@ class Gaussian(object):
             print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
         Scherrers()
 
-def Task5():
-    def StructureFactor(h,k,l):
-        U = []
-        V = []
-        W = []
-        #Above is basis coefficents
-        f = [] #Atomic scattering factor
-        Values = [f[m]*np.exp( 2*np.pi*j(U[m]*h+V[m]*k+W[m]*l))]
-        return sum(Lists)
+def Task6():
+    Values = np.array([38.52, 44.76, 65.14, 78.26, 82.47, 99.11, 112.03, 116.6])/2#In Degrees
+    Val2 = []
+    for val in Values:
+        Val2.append(math.radians(val))
+    Val2 = np.array(Val2)
+    Wavelength = 1.54 * 10 **(-10)
+    Distances = 1 * Wavelength /(2*np.sin(Val2))
+    Sinusvalsquared = np.sin(Val2)**2
 
+    M = []
+    hkl = []
+    for h in [1,2,3]:
+        for k in [0,1,2,3]:
+            for l in [0,1,2,3]:
+                M.append((h ** 2 + l ** 2 + h ** 2))
+                hkl.append([h,k,l])
+    M = np.array([M]).T
+    hkl = np.array([hkl])
+    print(M, hkl)
+
+Task6()
 
 def SilverComputation():
     """Silver, Ag, has a Cubic structure with a lattice constant of a = 4.086 Å"""
