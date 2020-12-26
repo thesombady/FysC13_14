@@ -7,7 +7,6 @@ from scipy.optimize import curve_fit
 import math
 
 try:
-    """
     PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
     PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
     PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
@@ -16,6 +15,7 @@ try:
     PATH1 = os.path.join(Folder, "Ag.xyd")
     PATH2 = os.path.join(Folder, "Al2O3.xyd")
     PATH3 = os.path.join(Folder, "mixture.xyd")
+    """
 except:
     try:
         Folder = os.path.join(os.getcwd(), "XrayData")
@@ -152,17 +152,22 @@ class Gaussian(object):
         for i in range(len(self.MuValues)):
             value = math.radians(self.MuValues[i]/2)
             d = self.Wavelength/(2*math.sin(value))
-            print(f"d = {d} [Å] for the data {self.Name} for peak {i+1}.")
+            #print(f"d = {d} [Å] for the data {self.Name} for peak {i+1}.")
             Distances.append(d)
         if b == None or c == None:
             b = a; c = a
-        for h in [0,1,2,3]:
-            for k in [0,1,2,3]:
-                for l in [0,1,2,3]:
+        Miller = {}
+        for h in [0,1,2,3,4]:
+            for k in [0,1,2,3,4]:
+                for l in [0,1,2,3,4]:
                     for i in range(len(Distances)):
                         Difference = abs((1/Distances[i])**2-((h/a)**2 + (k/b)**2 + (l/c)**2))
                         if Difference < Accurarcy:
-                            print(f"Peak {i+1} has the following millerplane({h},{k},{l})\nDifference is {Difference}")
+                            Miller[f'{i+1}'] =  f"({h},{k},{l})"
+
+        self.Miller = Miller
+        print(self.Miller)
+
         def Scherrers():
             T = lambda k, beta, theta: k*self.Wavelength/(beta * math.cos(math.radians(theta)))
             FWHM = lambda sigma: 2*math.sqrt(2*math.log(2))*sigma
@@ -172,34 +177,13 @@ class Gaussian(object):
             Mean = []
             for i in range(len(FWHM_Values)):
                 for j in range(len(self.MuValues)):
-                    Val = T(0.94, FWHM_Values[i], self.MuValues[j]/2)
+                    Val = T(0.94, FWHM_Values[i], self.MuValues[j])
                     #print(f"Scherrer's is then {Val} Å for peak {j}")
                     Mean.append(Val)
             print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
+            self.Scherrer = Mean
         Scherrers()
 
-def Task6():
-    Values = np.array([38.52, 44.76, 65.14, 78.26, 82.47, 99.11, 112.03, 116.6])/2#In Degrees
-    Val2 = []
-    for val in Values:
-        Val2.append(math.radians(val))
-    Val2 = np.array(Val2)
-    Wavelength = 1.54 * 10 **(-10)
-    Distances = 1 * Wavelength /(2*np.sin(Val2))
-    Sinusvalsquared = np.sin(Val2)**2
-
-    M = []
-    hkl = []
-    for h in [1,2,3]:
-        for k in [0,1,2,3]:
-            for l in [0,1,2,3]:
-                M.append((h ** 2 + l ** 2 + h ** 2))
-                hkl.append([h,k,l])
-    M = np.array([M]).T
-    hkl = np.array([hkl])
-    print(M, hkl)
-
-#Task6()
 
 def SilverComputation():
     """Silver, Ag, has a Cubic structure with a lattice constant of a = 4.086 Å"""
@@ -212,10 +196,15 @@ def SilverComputation():
     Peak5 = Silver.ComputeGaussian(4050, 4125)
     Peak6 = Silver.ComputeGaussian(5150, 5210)
     #Silver.Plotall()
-    Silver.SimlulatedData()
+    #Silver.SimlulatedData()
     #print(Silver)
-    Silver.Compute(4.086, Accurarcy = 0.05)
-    print(Silver.Amplitud)
+    Theta2 = np.array(Silver.MuValues)
+    Theta = Theta2/2
+    sinsquared = np.sin(np.radians(Theta))**2
+    #print(sinsquared)
+    Norm = sinsquared/sinsquared[0]
+    Silver.Compute(4.086, Accurarcy = 0.01)
+    #print(Silver.Amplitud)
 SilverComputation()
 
 def Al2O3Compuation():
@@ -241,11 +230,11 @@ def Al2O3Compuation():
     Peak17 = Al2O3.ComputeGaussian(4699, 4760)# Somewhat small peak
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
     #Al2O3.Plotall()
-    Al2O3.SimlulatedData()
+    #Al2O3.SimlulatedData()
     #print(Al2O3)
-    #Al2O3.Compute()
-    print(Al2O3.Amplitud)
-Al2O3Compuation()
+    Al2O3.Compute()
+    #print(Al2O3.Amplitud)
+#Al2O3Compuation()
 
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
@@ -273,4 +262,4 @@ def MixtureComputation():
     #print(Mixture)
     #Mixture.Compute()
     print(Mixture.Amplitud)
-MixtureComputation()
+#MixtureComputation()
