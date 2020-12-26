@@ -173,13 +173,13 @@ class Gaussian(object):
             FWHM = lambda sigma: 2*math.sqrt(2*math.log(2))*sigma
             FWHM_Values = []
             for val in (self.SigmaValues):
-                FWHM_Values.append(FWHM(val))
+                FWHM_Values.append(FWHM(np.radians(val)))
             Mean = []
             for i in range(len(FWHM_Values)):
-                for j in range(len(self.MuValues)):
-                    Val = T(0.94, FWHM_Values[i], self.MuValues[j])
-                    #print(f"Scherrer's is then {Val} Å for peak {j}")
-                    Mean.append(Val)
+                #for j in range(len(self.MuValues)):
+                Val = T(0.94, FWHM_Values[i], self.MuValues[i]/2)#Change to j if we decide to change
+                print(f"Scherrer's is then {Val} Å for peak {i+1}")#Change to j if we decide to change
+                Mean.append(Val)
             print(f"The mean Scherrer's shape is then {sum(Mean)/len(Mean)} [Å]")
             self.Scherrer = Mean
         Scherrers()
