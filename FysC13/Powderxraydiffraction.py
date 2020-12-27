@@ -140,6 +140,9 @@ class Gaussian(object):
         except Exception as e:
             raise e
 
+    def printinfo(self):
+        print(f"Sample:{self.Name}\nPeak locactions :{self.MuValues}\nAmplitude :{self.Amplitud}\n#Peaks:{len(self.MuValues)}")
+
     def __str__(self):
         return "Mu values :{}\nSigma values:{}".format([self.MuValues[i] for i in range(len(self.MuValues))], [self.SigmaValues[i] for i in range(len(self.SigmaValues))])
 
@@ -195,16 +198,13 @@ def SilverComputation():
     Peak4 = Silver.ComputeGaussian(3730, 3900)
     Peak5 = Silver.ComputeGaussian(4050, 4125)
     Peak6 = Silver.ComputeGaussian(5150, 5210)
-    Silver.Plotall()
     #Silver.SimlulatedData()
-    #print(Silver)
-    Theta2 = np.array(Silver.MuValues)
-    Theta = Theta2/2
-    sinsquared = np.sin(np.radians(Theta))**2
-    #print(sinsquared)
-    Norm = sinsquared/sinsquared[0]
-    Silver.Compute(4.086, Accurarcy = 0.01)
-    #print(Silver.Amplitud)
+    #Theta2 = np.array(Silver.MuValues)
+    #Theta = Theta2/2
+    #sinsquared = np.sin(np.radians(Theta))**2
+    #Norm = sinsquared/sinsquared[0]
+    #Silver.Compute(4.086, Accurarcy = 0.01)
+    Silver.printinfo()
 SilverComputation()
 
 def Al2O3Compuation():
@@ -229,12 +229,10 @@ def Al2O3Compuation():
     Peak16 = Al2O3.ComputeGaussian(4565, 4620)# Very small peak
     Peak17 = Al2O3.ComputeGaussian(4699, 4760)# Somewhat small peak
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
-    #Al2O3.Plotall()
     #Al2O3.SimlulatedData()
-    #print(Al2O3)
-    Al2O3.Compute()
-    #print(Al2O3.Amplitud)
-#Al2O3Compuation()
+    #Al2O3.Compute()
+    Al2O3.printinfo()
+Al2O3Compuation()
 
 def MixtureComputation():
     Mixture = Gaussian(Parser(PATH3))
@@ -258,8 +256,27 @@ def MixtureComputation():
     Peak17 = Mixture.ComputeGaussian(4560, 4625)
     Peak18 = Mixture.ComputeGaussian(4700, 4775)
     Peak19 = Mixture.ComputeGaussian(4975, 5050)
-    Mixture.SimlulatedData()
-    #print(Mixture)
+    #Mixture.SimlulatedData()
     #Mixture.Compute()
-    print(Mixture.Amplitud)
-#MixtureComputation()
+    Mixture.printinfo()
+MixtureComputation()
+
+def Excersise8():
+    I2 = 409.96845246324233
+    I1 = 267.0403396310394
+    X1 = lambda k: 1/(1+k*I2/I1)
+    dirivative = lambda k: 1/0.000001*(X1(k+0.000001)-X1(k))
+    xval = np.linspace(0,10,100)
+    xdir = np.array(list(map(dirivative, xval)))
+    print(xdir)
+    realx = lambda x: 1.15067728*x
+    x1list = np.array(list(map(X1, xval)))
+    #plt.plot(xval,x1list, '.')
+    #plt.plot(xval, list(map(realx, xval)))
+    #plt.plot(I2/I1, '-')
+    #plt.show()
+    X1val = X1(1.53522806)
+    X2 = 1 - X1val
+    print(X1val, X2)
+
+Excersise8()
