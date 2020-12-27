@@ -105,7 +105,7 @@ class Gaussian(object):
         try:
             plt.plot(self.xlist, self.ylist, '.', markersize = 1.5, label = self.Name + " Data")
             for i in range(len(self.Computed)):
-                plt.plot(self.Computed[i][0], self.Computed[i][1], '-', label = f"Fitted peak {i}")
+                plt.plot(self.Computed[i][0], self.Computed[i][1], '-', label = f"Fitted peak {i+1}")
             plt.title(r"Intensity versus $2\cdot \Theta$ angle for {} data".format(self.Name))
             plt.ylabel("Intensity [a.u]")
             plt.xlabel(r"$2\cdot \Theta$ [degree]")
@@ -195,7 +195,7 @@ def SilverComputation():
     Peak4 = Silver.ComputeGaussian(3730, 3900)
     Peak5 = Silver.ComputeGaussian(4050, 4125)
     Peak6 = Silver.ComputeGaussian(5150, 5210)
-    #Silver.Plotall()
+    Silver.Plotall()
     #Silver.SimlulatedData()
     #print(Silver)
     Theta2 = np.array(Silver.MuValues)
