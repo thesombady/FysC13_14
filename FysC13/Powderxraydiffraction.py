@@ -1,21 +1,13 @@
-#import pandas as pd
-#import PhysicsNum as pn
+import PhysicsNum as pn
 import numpy as np
 import os, sys
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import math
-
 try:
     PATH1 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "AG.xyd")
     PATH2 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "Al2O3.xyd")
     PATH3 = os.path.join("/Users/andreasevensen/Desktop/XrayDiffraction", "mixture.xyd")
-    """
-    Folder = os.path.join(os.getcwd(), "XrayData")
-    PATH1 = os.path.join(Folder, "Ag.xyd")
-    PATH2 = os.path.join(Folder, "Al2O3.xyd")
-    PATH3 = os.path.join(Folder, "mixture.xyd")
-    """
 except:
     try:
         Folder = os.path.join(os.getcwd(), "XrayData")
@@ -24,7 +16,6 @@ except:
         PATH3 = os.path.join(Folder, "mixture.xyd")
     except:
         raise PATHError("System; Cant locate the files")
-print(os.path.join(os.getcwd(), "XrayData/Ag.xyd"))
 def Parser(Path):
     """Parser function provides the parsered data provided from a .xyd file. This method requires that the data
     is strictly ordered"""
@@ -57,6 +48,9 @@ class Gaussian(object):
         self.MuValues = []
         self.SigmaValues = []
         self.Amplitud = []
+        self.ErrorMu = []
+        self.ErrorSigma = []
+        self.RieArea = []
 
     def plot(self):
         plt.title(r"Intensity versus $2\cdot \Theta$ angle for {} data".format(self.Name))
@@ -77,6 +71,9 @@ class Gaussian(object):
         xlist = np.linspace(xvalues[0] - 5, xvalues[-1] + 5, len(xvalues)*100)
         ylist = Gaussianfunc(xlist, Fit[0], Fit[1], Fit[2])
         self.Simluated.append(Gaussianfunc(self.xlist, Fit[0], Fit[1], Fit[2]))
+        func = lambda x: Fit[0]*np.exp(-(x - Fit[1])**2/(2*Fit[2]**2))
+        Area = pn.RiemanSum(func, self.xlist[0], self.xlist[-1])
+        self.RieArea.append(Area)
         if Plot == True:
             plt.plot(xlist, Gaussianfunc(xlist, Fit[0], Fit[1], Fit[2]), '-', label = "Guassian fit")
             plt.plot(self.xlist, self.ylist, '.', markersize = 1.5, label = self.Name)
@@ -86,6 +83,8 @@ class Gaussian(object):
             plt.grid()
             plt.legend()
             plt.show()
+        self.ErrorMu.append(covarience[2][2])
+        self.ErrorSigma.append(covarience[1][1])
         self.MuValues.append(Fit[1])
         self.SigmaValues.append(Fit[2])
         self.Computed.append((xlist, ylist))
@@ -141,7 +140,7 @@ class Gaussian(object):
             raise e
 
     def printinfo(self):
-        print(f"Sample:{self.Name}\nPeak locactions :{self.MuValues}\nAmplitude :{self.Amplitud}\n#Peaks:{len(self.MuValues)}")
+        print(f"Sample:{self.Name}\nPeak locactions :{self.MuValues}\nAmplitude :{self.Amplitud}\n#Peaks:{len(self.MuValues)}\nArea:{self.RieArea}\nMiller:{self.Miller}")
 
     def __str__(self):
         return "Mu values :{}\nSigma values:{}".format([self.MuValues[i] for i in range(len(self.MuValues))], [self.SigmaValues[i] for i in range(len(self.SigmaValues))])
@@ -167,9 +166,7 @@ class Gaussian(object):
                         Difference = abs((1/Distances[i])**2-((h/a)**2 + (k/b)**2 + (l/c)**2))
                         if Difference < Accurarcy:
                             Miller[f'{i+1}'] =  f"({h},{k},{l})"
-
         self.Miller = Miller
-        print(self.Miller)
 
         def Scherrers():
             T = lambda k, beta, theta: k*self.Wavelength/(beta * math.cos(math.radians(theta)))
@@ -199,12 +196,8 @@ def SilverComputation():
     Peak4 = Silver.ComputeGaussian(3730, 3900)
     Peak5 = Silver.ComputeGaussian(4050, 4125)
     Peak6 = Silver.ComputeGaussian(5150, 5210)
-    #Silver.SimlulatedData()
-    #Theta2 = np.array(Silver.MuValues)
-    #Theta = Theta2/2
-    #sinsquared = np.sin(np.radians(Theta))**2
-    #Norm = sinsquared/sinsquared[0]
-    #Silver.Compute(4.086, Accurarcy = 0.01)
+    Silver.SimlulatedData()
+    Silver.Compute(4.086, Accurarcy = 0.01)
     Silver.printinfo()
 SilverComputation()
 
@@ -231,8 +224,6 @@ def Al2O3Compuation():
     Peak16 = Al2O3.ComputeGaussian(4565, 4620)# Very small peak
     Peak17 = Al2O3.ComputeGaussian(4699, 4760)# Somewhat small peak
     Peak18 = Al2O3.ComputeGaussian(4950, 5070)
-    #Al2O3.SimlulatedData()
-    #Al2O3.Compute()
     Al2O3.printinfo()
 Al2O3Compuation()
 
@@ -259,8 +250,8 @@ def MixtureComputation():
     Peak17 = Mixture.ComputeGaussian(4560, 4625)
     Peak18 = Mixture.ComputeGaussian(4700, 4775)
     Peak19 = Mixture.ComputeGaussian(4975, 5050)
-    #Mixture.SimlulatedData()
-    #Mixture.Compute()
+    Mixture.SimlulatedData()
+    Mixture.Compute()
     Mixture.printinfo()
 MixtureComputation()
 
@@ -271,38 +262,10 @@ def Excersise8():
     dirivative = lambda k: 1/0.000001*(X1(k+0.000001)-X1(k))
     xval = np.linspace(0,10,100)
     xdir = np.array(list(map(dirivative, xval)))
-    value = -xdir[1]
+    value = -xdir[0]
     realx = lambda x: value*x
     x1list = np.array(list(map(X1, xval)))
-    #plt.plot(xval,x1list, '.')
-    #plt.plot(xval, list(map(realx, xval)))
-    #plt.plot(I2/I1, '-')
-    #plt.show()
     X1val = X1(value)
     X2 = 1 - X1val
-    print(X1val, X2)#0.4213874789674237 0.5786125210325763
+    print(X1val, X2)
 Excersise8()
-def Excersise8revised():
-    I2 = 409.96845246324233
-    I1 = 267.0403396310394
-    X1 = 1/(1+(I2/I1)**2)
-    print(X1, 1-X1) #q 0.7021089884360301
-#Excersise8revised()
-def ex8():
-    err = .1
-    meanal = []
-    meanag = []
-    for i in range(len(Mixture.Amplitud)):
-        for j in range(len(Al2O3.Amplitud)):
-            if abs(Al2O3.MuValues[j]-Mixture.MuValues[i])<err:
-                Intensity = (Al2O3.Amplitud[j]/Mixture.Amplitud[i])**(-1)
-                print(f"Intensity ratio for Mixture aluminoum : {Intensity} for {i+1} and {j+1}")
-                meanal.append(Intensity)
-        for z in range(len(Silver.Amplitud)):
-            if abs(Silver.MuValues[z]-Mixture.MuValues[i])<err:
-                Intensity = (Silver.Amplitud[z]/Mixture.Amplitud[i])**(-1)
-                print(f"Intensity ratio for Mixture Silver : {Intensity} for {i+1} and {j+1}")
-                meanag.append(Intensity)
-    print(sum(meanal)/len(meanal))
-    print(sum(meanag)/len(meanag))
-#ex8()
