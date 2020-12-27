@@ -190,6 +190,7 @@ class Gaussian(object):
 
 def SilverComputation():
     """Silver, Ag, has a Cubic structure with a lattice constant of a = 4.086 Å"""
+    global Silver
     Silver = Gaussian(Parser(PATH1))
     Silver.Name = "Silver"
     Peak1 = Silver.ComputeGaussian(1150, 1275)
@@ -209,6 +210,7 @@ SilverComputation()
 
 def Al2O3Compuation():
     """Al2O3 has a hexogonal structure with the following constants, a = b = 4.7589 Å and c = 12.991 Å, α = β= 90° and γ = 120 """
+    global Al2O3
     Al2O3 = Gaussian(Parser(PATH2))
     Al2O3.Name = "Al2O3"
     Peak1 = Al2O3.ComputeGaussian(340, 405)
@@ -235,6 +237,7 @@ def Al2O3Compuation():
 Al2O3Compuation()
 
 def MixtureComputation():
+    global Mixture
     Mixture = Gaussian(Parser(PATH3))
     Mixture.Name = "Ag & Al2O3 mix"
     Peak1 = Mixture.ComputeGaussian(325,400)
@@ -268,15 +271,38 @@ def Excersise8():
     dirivative = lambda k: 1/0.000001*(X1(k+0.000001)-X1(k))
     xval = np.linspace(0,10,100)
     xdir = np.array(list(map(dirivative, xval)))
-    print(xdir)
-    realx = lambda x: 1.15067728*x
+    value = -xdir[1]
+    realx = lambda x: value*x
     x1list = np.array(list(map(X1, xval)))
     #plt.plot(xval,x1list, '.')
     #plt.plot(xval, list(map(realx, xval)))
     #plt.plot(I2/I1, '-')
     #plt.show()
-    X1val = X1(1.53522806)
+    X1val = X1(value)
     X2 = 1 - X1val
-    print(X1val, X2)
-
+    print(X1val, X2)#0.4213874789674237 0.5786125210325763
 Excersise8()
+def Excersise8revised():
+    I2 = 409.96845246324233
+    I1 = 267.0403396310394
+    X1 = 1/(1+(I2/I1)**2)
+    print(X1, 1-X1) #q 0.7021089884360301
+#Excersise8revised()
+def ex8():
+    err = .1
+    meanal = []
+    meanag = []
+    for i in range(len(Mixture.Amplitud)):
+        for j in range(len(Al2O3.Amplitud)):
+            if abs(Al2O3.MuValues[j]-Mixture.MuValues[i])<err:
+                Intensity = (Al2O3.Amplitud[j]/Mixture.Amplitud[i])**(-1)
+                print(f"Intensity ratio for Mixture aluminoum : {Intensity} for {i+1} and {j+1}")
+                meanal.append(Intensity)
+        for z in range(len(Silver.Amplitud)):
+            if abs(Silver.MuValues[z]-Mixture.MuValues[i])<err:
+                Intensity = (Silver.Amplitud[z]/Mixture.Amplitud[i])**(-1)
+                print(f"Intensity ratio for Mixture Silver : {Intensity} for {i+1} and {j+1}")
+                meanag.append(Intensity)
+    print(sum(meanal)/len(meanal))
+    print(sum(meanag)/len(meanag))
+#ex8()
