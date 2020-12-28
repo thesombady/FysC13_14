@@ -89,7 +89,7 @@ class Gaussian(object):
         self.SigmaValues.append(Fit[2])
         self.Computed.append((xlist, ylist))
         self.Amplitud.append(Fit[0])
-        return Gaussianfunc, Fit, covarience
+        return func, Fit, covarience
 
     def TestValues(self, index1, index2):
         plt.plot(self.xlist, self.ylist, '.', markersize = 1.5)
