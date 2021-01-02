@@ -47,8 +47,8 @@ plt.plot(xlist, ylist, label="Test")
 plt.plot(xlist, ylist2, label = "Test2")
 plt.xlim(-4*pi/3, 4*pi/3)
 plt.show()
-"""''
-
+"""
+"""
 plt.axvline(-pi/2, color = "black", linestyle = "--")
 plt.axvline(+pi/2, color = "black", linestyle = "--")
 xlist = np.linspace(-3/2*pi, 3/2*pi, 1000)
@@ -60,3 +60,18 @@ plt.plot(xlist2, ylist2, '.', label = r"Quantized $k$", color = "red")
 plt.legend()
 plt.show()
 print("Hello")
+"""
+def Fermi_Dirac():
+    kb = 8.6e-5
+    xval = np.linspace(0,5,1000)
+    T = [0,260,1000]
+    for t in T:
+        yval = 1 / (1+np.exp((xval-2.5)/(kb*t)))
+        plt.plot(xval, yval, '-', label = f"Temp: {t} K")
+    plt.xlabel("States -> eV")
+    plt.ylabel("Probability")
+    plt.title(r"Fermi-Dirac distribution for $\mu = 3$ eV")
+    plt.legend()
+    #plt.savefig("Fermi_Dirac.png")
+    plt.show()
+Fermi_Dirac()
