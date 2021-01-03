@@ -74,4 +74,33 @@ def Fermi_Dirac():
     plt.legend()
     #plt.savefig("Fermi_Dirac.png")
     plt.show()
-Fermi_Dirac()
+#Fermi_Dirac()
+def Particle_In_Box():
+    from mpl_toolkits.mplot3d import Axes3D
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    n_x = np.linspace(-10,10,1000)
+    n_y = np.linspace(-10,10,1000)
+    n_z = np.linspace(-10,10,1000)
+    hbar = 8.6e-5
+    l = 10e-9
+    m_e = 511e3 #electron mass in eV
+    #E_x = hbar**2*n_x**2/(l*m_e*2)*2*np.pi
+    #E_y = hbar**2*n_y**2/(l*m_e*2)*2*np.pi
+    X,Y = np.meshgrid(n_x, n_y)
+    func = lambda x,y: hbar**2/(2*m_e*l)*2*np.pi*(x**2 + y**2)
+    func1 = np.vectorize(func)
+    zval = func1(X,Y)
+    X = hbar**2/(2*m_e*l)*2*np.pi*(n_x)
+    Y = hbar**2/(2*m_e*l)*2*np.pi*(n_y)
+    Z = hbar**2/(2*m_e*l)*2*np.pi*(n_z)
+    ax.contourf(X=X,Y=Y,Z = zval)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z')
+    plt.title(r"Eigen-energies for $\bar{k}$")
+    plt.show()
+
+
+
+Particle_In_Box()
