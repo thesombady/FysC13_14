@@ -79,8 +79,8 @@ def Particle_In_Box():
     from mpl_toolkits.mplot3d import Axes3D
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    n_x = np.linspace(-10,10,1000)
-    n_y = np.linspace(-10,10,1000)
+    n_x = np.linspace(-10,10,20)
+    n_y = np.linspace(-10,10,20)
     n_z = np.linspace(-10,10,1000)
     hbar = 8.6e-5
     l = 10e-9
