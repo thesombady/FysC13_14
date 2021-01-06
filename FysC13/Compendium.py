@@ -98,7 +98,30 @@ def Particle_In_Box():
     plt.yticks([])
     plt.gca().axes.zaxis.set_ticklabels([])
     plt.show()
-
-
-
-Particle_In_Box()
+#Particle_In_Box()
+def DensityOfStates():
+    kb = 8.6e-5
+    hbar = 4.135667696*10**(-15)
+    Energy = np.linspace(0.0001,2,1000)#in eV
+    m_e = 511e3
+    V = (0.2e-17)**(3)#volume in m
+    gE = V/(2*np.pi**2)*(2*m_e/((hbar/(2*np.pi)) ** 2)) ** (3/2) * np.sqrt(Energy)
+    T = [0, 280, 500]#Temperatures in Kelvin
+    color = {
+        0: (1,0,0,0.3),
+        280 : (0,1,0,0.3),
+        500 : (0,0,1,0.3)
+    }
+    for t in T:
+        zlist = 1/(1+np.exp((Energy-1)/(kb*t)))
+        plt.plot(Energy, zlist*gE, label = f"Fermi-Dirac at T = {t}K")
+        plt.fill_between(Energy, y1=0, y2=zlist*gE, color = color[t])
+    plt.plot(Energy,gE, label = r"$g(E)$")
+    plt.xlabel("Energy")
+    plt.ylabel(r"Density of states, $g(E)$")
+    plt.legend()
+    plt.title("Density of states")
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+DensityOfStates()
