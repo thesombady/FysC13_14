@@ -124,4 +124,36 @@ def DensityOfStates():
     plt.xticks([])
     plt.yticks([])
     plt.show()
-DensityOfStates()
+#DensityOfStates()
+def Screening():
+    kb = 8.6e-5
+    hbar = 4.135667696*10**(-15)
+    Energy = np.linspace(0.0001,2,1000)#in eV
+    m_e = 511e3
+    V = (0.2e-17)**(3)#volume in m
+    gE = V/(2*np.pi**2)*(2*m_e/((hbar/(2*np.pi)) ** 2)) ** (3/2) * np.sqrt(Energy)
+    zlist = 1/(1+np.exp((Energy-1)/(kb*280)))
+    fig, ax = plt.subplots(2, sharex=True, sharey = True)
+    x2 = np.linspace(-0.1,2,1000)
+    g2 = gE = V/(2*np.pi**2)*(2*m_e/((hbar/(2*np.pi)) ** 2)) ** (3/2) * np.sqrt(x2)
+    z2 = zlist = 1/(1+np.exp((x2-1)/(kb*280)))
+    ax[1].plot(x2, g2, label = "Screened")
+    ax[1].fill_between(x2, y1=-0.1, y2=z2*gE, color = (0.3,0,1,1))
+    ax[1].fill_between(Energy, y1=0, y2=zlist*gE, color = (0.3,0,1,0.3))
+    ax[0].plot(Energy, zlist*gE, label = f"Fermi-Dirac at T = 280 K", color = "Blue")
+    ax[0].fill_between(Energy, y1=0, y2=zlist*gE, color = (0.3,0,1,0.3))
+    ax[0].plot(Energy,gE,'.', label = r"$g(E)$", color="Red", markersize=0.5)
+    plt.xlabel("Energy")
+    plt.ylabel(r"Density of states, $g(E)$")
+    ax[0].axvline(0, color = "Black", label = "X = 0", linestyle="-")
+    ax[1].axvline(0, color = "Black", label = "X = 0", linestyle="-")
+    ax[0].axvline(1, color = "gray", label = "X = Fermi", linestyle="-")
+    ax[1].axvline(1, color = "gray", label = "X = Fermi", linestyle="-")
+    plt.legend()
+    for ax in fig.get_axes():
+        ax.label_outer()
+    fig.suptitle("Density of states")
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+Screening()
