@@ -156,4 +156,4 @@ def Screening():
     plt.xticks([])
     plt.yticks([])
     plt.show()
-Screening()
+#Screening()
