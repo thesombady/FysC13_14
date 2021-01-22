@@ -157,3 +157,15 @@ def Screening():
     plt.yticks([])
     plt.show()
 #Screening()
+
+def mu():
+    xlist = np.linspace(0,10,1000)#Energy in eV
+    hbar = 4.13e-15/(2*np.pi) #in eV
+    me = 511e3 #in eV
+    V = 0.1e-53
+    ge = V/(2*np.pi**2)*(2*me/(hbar**2))**(3/2)*np.sqrt(xlist)
+    kb = 8.6e-5
+    zlist = 1/(1+np.exp((xlist-1)/(kb*280)))
+    plt.plot(xlist, ge*zlist,'.')
+    plt.show()
+mu()
